@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
 
-: ${CONTAINER_CLI:="docker"}
-if command -v ${CONTAINER_CLI}-compose > /dev/null 2>&1; then
-    : ${CONTAINER_CLI_COMPOSE:="${CONTAINER_CLI}-compose"}
-else
-    : ${CONTAINER_CLI_COMPOSE:="${CONTAINER_CLI} compose"}
-fi
-
+CONTAINER_CLI="docker"
+CONTAINER_CLI_COMPOSE="docker-compose"
 CRYPTO="cryptogen"
 
-function createOrgs(){
+createOrgs(){
     if [ -d "organizations/peerOrganizations" ]; then
         rm -Rf organizations/peerOrganizations && rm -Rf organizations/ordererOrganizations
     fi
@@ -51,7 +46,7 @@ function createOrgs(){
     fi
 }
 
-function networkUp(){
+networkUp(){
     createOrgs
 
     COMPOSE_FILES="-f compose/${COMPOSE_FILE_BASE} -f compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_BASE}"
